@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Phillips4Cast">
+    <meta name="theme-color" content="#6366f1">
+    <title>Phillips4Cast</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #151520;
+            --bg-tertiary: #1e1e2e;
+            --bg-accent: #252530;
+            --accent-primary: #6366f1;
+            --accent-secondary: #a855f7;
+            --accent-tertiary: #06b6d4;
+            --accent-warm: #f59e0b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border-subtle: #334155;
+            --border-accent: #475569;
+            --glass-bg: rgba(21, 21, 32, 0.6);
+            --glass-border: rgba(99, 102, 241, 0.2);
+            --shadow-primary: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --shadow-accent: 0 20px 50px rgba(99, 102, 241, 0.3);
+            --shadow-glow: 0 0 50px rgba(99, 102, 241, 0.1);
+            
+            /* Category Colors */
+            --category-appointments: #06b6d4;
+            --category-events: #ef4444;
+            --category-deadlines: #f59e0b;
+            --category-reminders: #a855f7;
+            --category-trips: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated cosmic background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 60%),
+                linear-gradient(135deg, var(--bg-primary) 0%, #0f0f1a 50%, var(--bg-primary) 100%);
+            animation: cosmicFlow 30s ease-in-out infinite;
+            z-index: -2;
+        }
+
+        /* Floating particles */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(99, 102, 241, 0.3), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(168, 85, 247, 0.2), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(6, 182, 212, 0.4), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(245, 158, 11, 0.3), transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: particleFloat 20s linear infinite;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        @keyframes cosmicFlow {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(-20px, -15px) scale(1.1) rotate(1deg); }
+            66% { transform: translate(15px, -10px) scale(0.9) rotate(-1deg); }
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0px) translateX(0px); }
+            50% { transform: translateY(-100px) translateX(50px); }
+            100% { transform: translateY(-200px) translateX(-50px); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Futuristic header */
+        .header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-primary), var(--shadow-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 1px;
+        }
+
+        .logo svg {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            fill: currentColor;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .btn:hover::before {
+            opacity: 0.1;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(99, 102, 241, 0.2);
+            border-color: var(--accent-primary);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-accent);
+        }
+
+        /* Ethereal search */
+        .search-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 32px;
+            position: relative;
+            box-shadow: var(--shadow-primary);
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(21, 21, 32, 0.8);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px 24px;
+            font-size: 16px;
+            color: var(--text-primary);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2), inset 0 0 20px rgba(99, 102, 241, 0.05);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Morphing toggle */
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            justify-content: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 72px;
+            height: 36px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .toggle-checkbox:checked + .toggle-switch {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--accent-primary);
+        }
+
+        .toggle-checkbox:checked + .toggle-switch::before {
+            transform: translateX(36px);
+        }
+
+        .toggle-checkbox {
+            display: none;
+        }
+
+        .toggle-switch:hover {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Cosmic layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        /* Floating calendar */
+        .calendar-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-primary), var(--shadow-glow);
+            position: relative;
+        }
+
+        .calendar-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            animation: progressGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes progressGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .calendar-header {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            padding: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            backdrop-filter: blur(20px);
+        }
+
+        .calendar-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-accent);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 18px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-primary);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        .calendar-content {
+            padding: 28px;
+            background: rgba(10, 10, 15, 0.3);
+        }
+
+        .calendar-months {
+            display: grid;
+            gap: 28px;
+        }
+
+        .calendar-month.two-months {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+
+        .month-container {
+            background: rgba(21, 21, 32, 0.6);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .month-title {
+            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-accent));
+            padding: 20px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--accent-primary);
+            border-bottom: 1px solid var(--border-subtle);
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--border-subtle);
+        }
+
+        .day-header {
+            background: var(--bg-tertiary);
+            padding: 16px 8px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .day {
+            background: rgba(21, 21, 32, 0.8);
+            min-height: 90px;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .day:hover {
+            background: rgba(99, 102, 241, 0.1);
+            transform: scale(1.05);
+            z-index: 10;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+        }
+
+        .day.current {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+        }
+
+        .day.other-month {
+            background: rgba(15, 15, 20, 0.5);
+            color: var(--text-muted);
+            opacity: 0.4;
+        }
+
+        .day-number {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .day-events {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            flex-grow: 1;
+        }
+
+        .day-event {
+            color: white;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: eventSlide 0.5s ease;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .day-event.appointments {
+            background: linear-gradient(135deg, var(--category-appointments), rgba(6, 182, 212, 0.8));
+        }
+
+        .day-event.events {
+            background: linear-gradient(135deg, var(--category-events), rgba(239, 68, 68, 0.8));
+        }
+
+        .day-event.deadlines {
+            background: linear-gradient(135deg, var(--category-deadlines), rgba(245, 158, 11, 0.8));
+        }
+
+        .day-event.reminders {
+            background: linear-gradient(135deg, var(--category-reminders), rgba(168, 85, 247, 0.8));
+        }
+
+        .day-event.trips {
+            background: linear-gradient(135deg, var(--category-trips), rgba(16, 185, 129, 0.8));
+        }
+
+        @keyframes eventSlide {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Holographic sidebar */
+        .upcoming-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-primary), var(--shadow-glow);
+            position: sticky;
+            top: 24px;
+            max-height: calc(100vh - 48px);
+        }
+
+        .upcoming-header {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            padding: 28px;
+            border-bottom: 1px solid var(--border-subtle);
+            position: relative;
+        }
+
+        .upcoming-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+
+        .upcoming-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+
+        .upcoming-list {
+            padding: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .upcoming-item {
+            background: rgba(21, 21, 32, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+        }
+
+        .upcoming-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+            border-radius: 0 2px 2px 0;
+        }
+
+        .upcoming-item.appointments::before {
+            background: linear-gradient(to bottom, var(--category-appointments), rgba(6, 182, 212, 0.5));
+        }
+
+        .upcoming-item.events::before {
+            background: linear-gradient(to bottom, var(--category-events), rgba(239, 68, 68, 0.5));
+        }
+
+        .upcoming-item.deadlines::before {
+            background: linear-gradient(to bottom, var(--category-deadlines), rgba(245, 158, 11, 0.5));
+        }
+
+        .upcoming-item.reminders::before {
+            background: linear-gradient(to bottom, var(--category-reminders), rgba(168, 85, 247, 0.5));
+        }
+
+        .upcoming-item.trips::before {
+            background: linear-gradient(to bottom, var(--category-trips), rgba(16, 185, 129, 0.5));
+        }
+
+        .upcoming-item:hover {
+            transform: translateX(12px) translateY(-4px);
+            background: rgba(99, 102, 241, 0.1);
+            box-shadow: 0 16px 40px rgba(99, 102, 241, 0.2);
+            border-color: var(--accent-primary);
+        }
+
+        .upcoming-item.overdue::before {
+            background: linear-gradient(to bottom, var(--accent-warm), #ff4444);
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.8); }
+        }
+
+        .upcoming-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent-primary);
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+        }
+
+        .upcoming-title-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .upcoming-details {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Neon categories */
+        .categories-section {
+            margin-top: 40px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 28px;
+        }
+
+        .category-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-primary);
+            position: relative;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(99, 102, 241, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .category-card:hover::before {
+            opacity: 1;
+        }
+
+        .category-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2), var(--shadow-glow);
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            padding: 24px 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-subtle);
+            position: relative;
+        }
+
+        .category-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: currentColor;
+            opacity: 0.5;
+        }
+
+        .category-header.appointments {
+            color: var(--category-appointments);
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        .category-header.events {
+            color: var(--category-events);
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+
+        .category-header.deadlines {
+            color: var(--category-deadlines);
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+
+        .category-header.reminders {
+            color: var(--category-reminders);
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+        }
+
+        .category-header.trips {
+            color: var(--category-trips);
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        .category-items {
+            padding: 20px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .category-item {
+            background: rgba(21, 21, 32, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            backdrop-filter: blur(15px);
+        }
+
+        .category-item:hover {
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateX(8px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.1);
+        }
+
+        .item-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent-primary);
+            font-weight: 700;
+            min-width: 70px;
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+        }
+
+        .item-content {
+            flex-grow: 1;
+        }
+
+        .item-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .item-notes {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .item-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .category-item:hover .item-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .action-btn:hover {
+            background: var(--accent-primary);
+            color: white;
+            transform: scale(1.15);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Ethereal modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(16px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 550px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-primary), var(--shadow-glow);
+            animation: modalFloat 0.5s ease;
+            position: relative;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary), var(--accent-primary));
+            border-radius: 24px;
+            z-index: -1;
+            animation: borderRotate 4s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes modalFloat {
+            from {
+                transform: translateY(40px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-btn:hover {
+            background: var(--accent-secondary);
+            color: var(--text-primary);
+            transform: scale(1.1);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(21, 21, 32, 0.8);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2), inset 0 0 20px rgba(99, 102, 241, 0.05);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23cbd5e1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 16px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 48px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* Quantum notification */
+        .notification {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-primary);
+            padding: 20px 28px;
+            border-radius: 16px;
+            font-weight: 600;
+            box-shadow: var(--shadow-accent);
+            transform: translateY(100px) scale(0.8);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .notification.show {
+            transform: translateY(0) scale(1);
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 24px 20px;
+            }
+
+            .title {
+                font-size: 28px;
+            }
+
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .upcoming-section {
+                position: static;
+                max-height: 400px;
+                order: 2;
+            }
+
+            .calendar-section {
+                order: 1;
+            }
+
+            .calendar-month.two-months {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .modal-content {
+                padding: 28px 24px;
+                margin: 20px;
+            }
+
+            .notification {
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                text-align: center;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-tertiary));
+        }
+
+        /* Hidden utility */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                        <circle cx="12" cy="4" r="1.5"/>
+                    </svg>
+                    P4CAST
+                </div>
+                <h1 class="title">Phillips4Cast</h1>
+            </div>
+            <div class="controls">
+                <button class="btn" id="exportBtn">📤 Export</button>
+                <label for="importFile" class="btn">📥 Import</label>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+                <button class="btn btn-primary" id="addItemBtn">+ Add New</button>
+            </div>
+        </header>
+
+        <!-- Search -->
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search events, appointments, trips...">
+        </div>
+
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <label for="twoMonthToggle" style="color: var(--text-secondary); font-size: 14px; font-weight: 600;">Show Two Months</label>
+            <input type="checkbox" id="twoMonthToggle" class="toggle-checkbox">
+            <label for="twoMonthToggle" class="toggle-switch"></label>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Calendar Section -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <button class="nav-btn" id="prevBtn">‹</button>
+                    <h2 class="calendar-title" id="calendarTitle">May 2025</h2>
+                    <button class="nav-btn" id="nextBtn">›</button>
+                </div>
+                <div class="calendar-content">
+                    <div class="calendar-months" id="calendarContainer">
+                        <!-- Calendar will be rendered here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="upcoming-section">
+                <div class="upcoming-header">
+                    <h2 class="upcoming-title">Upcoming Events</h2>
+                </div>
+                <div class="upcoming-list" id="upcomingList">
+                    <!-- Upcoming items will be rendered here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="categories-section">
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Categories will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="itemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Add New Item</h2>
+                <button class="close-btn" id="closeModalBtn">×</button>
+            </div>
+            <form id="itemForm">
+                <input type="hidden" id="itemId">
+                
+                <div class="form-group">
+                    <label class="form-label" for="itemTitle">Title</label>
+                    <input type="text" class="form-input" id="itemTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="itemCategory">Category</label>
+                    <select class="form-input form-select" id="itemCategory" required>
+                        <option value="appointments">Appointment</option>
+                        <option value="events">Event</option>
+                        <option value="deadlines">Kids Events/Appts</option>
+                        <option value="reminders">Reminder</option>
+                        <option value="trips">Trip</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="singleDateGroup">
+                    <label class="form-label" for="itemDate">Date</label>
+                    <input type="date" class="form-input" id="itemDate">
+                </div>
+                
+                <div class="form-group hidden" id="dateRangeGroup">
+                    <label class="form-label" for="itemStartDate">Start Date</label>
+                    <input type="date" class="form-input" id="itemStartDate">
+                    <label class="form-label" for="itemEndDate" style="margin-top: 12px;">End Date</label>
+                    <input type="date" class="form-input" id="itemEndDate">
+                </div>
+                
+                <div class="form-group" id="timeGroup">
+                    <label class="form-label" for="itemTime">Time (optional)</label>
+                    <input type="time" class="form-input" id="itemTime">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="itemNotes">Notes (optional)</label>
+                    <textarea class="form-input form-textarea" id="itemNotes" rows="3"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn" id="cancelBtn">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveBtn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Global variables
+        const STORAGE_KEY = 'phillips4cast-data';
+        let items = [];
+        let currentMonth = new Date();
+        
+        // Sample data matching your JSON structure
+        const sampleData = {
+            "active": [
+                {
+                    "id": 12,
+                    "title": "Mid-Year Staff Reviews",
+                    "category": "events",
+                    "notes": "",
+                    "date": "2025-06-19",
+                    "time": ""
+                },
+                {
+                    "id": 13,
+                    "title": "2Q BOD",
+                    "category": "events",
+                    "notes": "",
+                    "date": "2025-07-09",
+                    "time": ""
+                },
+                {
+                    "id": 14,
+                    "title": "Cinnamon Shores",
+                    "category": "trips",
+                    "notes": "w/ Jiminez Fam",
+                    "startDate": "2025-06-08",
+                    "endDate": "2025-06-13"
+                },
+                {
+                    "id": 15,
+                    "title": "Grand Tetons, WY",
+                    "category": "trips",
+                    "notes": "",
+                    "startDate": "2025-07-10",
+                    "endDate": "2025-07-18"
+                },
+                {
+                    "id": 16,
+                    "title": "Lichty Catch-Up Call",
+                    "category": "appointments",
+                    "notes": "Start Anne's perm life insurance once Riley out of Primrose.",
+                    "date": "2025-06-03",
+                    "time": "13:30"
+                },
+                {
+                    "id": 22,
+                    "title": "Fishing with WB",
+                    "category": "appointments",
+                    "notes": "",
+                    "date": "2025-06-11",
+                    "time": "05:00"
+                },
+                {
+                    "id": 36,
+                    "title": "Poker Night",
+                    "category": "events",
+                    "notes": "",
+                    "date": "2025-06-06",
+                    "time": "19:00"
+                },
+                {
+                    "id": 42,
+                    "title": "Anne endoscopy",
+                    "category": "reminders",
+                    "notes": "",
+                    "date": "2025-07-08",
+                    "time": ""
+                },
+                {
+                    "id": 45,
+                    "title": "Eleanor and Eva Birthday Parties",
+                    "category": "deadlines",
+                    "notes": "Eva - 10am\nEleanor - 11:30am",
+                    "date": "2025-05-31",
+                    "time": "10:00"
+                },
+                {
+                    "id": 46,
+                    "title": "VBS for Riley",
+                    "category": "deadlines",
+                    "notes": "Tuesday (6/3 thru Thursday (6/5); 9am-12:30pm",
+                    "date": "2025-06-03",
+                    "time": ""
+                }
+            ]
+        };
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', init);
+
+        function init() {
+            loadData();
+            setupEventListeners();
+            render();
+        }
+
+        function loadData() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    items = data.active || data || [];
+                } else {
+                    items = sampleData.active;
+                    saveData();
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                items = sampleData.active;
+            }
+        }
+
+        function saveData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({ active: items }));
+                showNotification('Data saved successfully!');
+            } catch (error) {
+                console.error('Error saving data:', error);
+                showNotification('Error saving data', 'error');
+            }
+        }
+
+        function setupEventListeners() {
+            // Header buttons
+            document.getElementById('addItemBtn').addEventListener('click', openAddModal);
+            document.getElementById('exportBtn').addEventListener('click', exportData);
+            document.getElementById('importFile').addEventListener('change', importData);
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+
+            // Two month toggle
+            document.getElementById('twoMonthToggle').addEventListener('change', renderCalendar);
+
+            // Calendar navigation
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                currentMonth.setMonth(currentMonth.getMonth() - 1);
+                renderCalendar();
+            });
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                currentMonth.setMonth(currentMonth.getMonth() + 1);
+                renderCalendar();
+            });
+
+            // Modal
+            document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            document.getElementById('saveBtn').addEventListener('click', saveItem);
+            document.getElementById('itemCategory').addEventListener('change', toggleDateFields);
+
+            // Click outside modal to close
+            document.getElementById('itemModal').addEventListener('click', (e) => {
+                if (e.target.id === 'itemModal') closeModal();
+            });
+
+            // ESC key to close modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal();
+            });
+        }
+
+        function render() {
+            renderCalendar();
+            renderUpcoming();
+            renderCategories();
+        }
+
+        function renderCalendar() {
+            const container = document.getElementById('calendarContainer');
+            const title = document.getElementById('calendarTitle');
+            const showTwoMonths = document.getElementById('twoMonthToggle').checked;
+
+            const monthsToShow = showTwoMonths ? 2 : 1;
+            const months = [];
+            
+            for (let i = 0; i < monthsToShow; i++) {
+                const month = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + i, 1);
+                months.push(month);
+            }
+
+            // Update title
+            if (showTwoMonths) {
+                title.textContent = months.map(m => m.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })).join(' & ');
+                container.className = 'calendar-months';
+                container.innerHTML = `<div class="calendar-month two-months">${months.map(renderMonth).join('')}</div>`;
+            } else {
+                title.textContent = months[0].toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                container.className = 'calendar-months';
+                container.innerHTML = renderMonth(months[0]);
+            }
+        }
+
+        function renderMonth(month) {
+            const firstDay = new Date(month.getFullYear(), month.getMonth(), 1);
+            const lastDay = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            let html = `
+                <div class="month-container">
+                    <div class="month-title">${month.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</div>
+                    <div class="calendar-grid">
+                        <div class="day-header">Sun</div>
+                        <div class="day-header">Mon</div>
+                        <div class="day-header">Tue</div>
+                        <div class="day-header">Wed</div>
+                        <div class="day-header">Thu</div>
+                        <div class="day-header">Fri</div>
+                        <div class="day-header">Sat</div>
+            `;
+
+            // Previous month days
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                const date = new Date(startDate);
+                date.setDate(date.getDate() + i);
+                html += `<div class="day other-month"><div class="day-number">${date.getDate()}</div></div>`;
+            }
+
+            // Current month days
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(month.getFullYear(), month.getMonth(), day);
+                const dateStr = formatDateISO(date);
+                const dayEvents = getEventsForDate(dateStr);
+                const isToday = date.getTime() === today.getTime();
+
+                html += `
+                    <div class="day ${isToday ? 'current' : ''}" ${dayEvents.length > 0 ? `onclick="showDayEvents('${dateStr}')"` : ''}>
+                        <div class="day-number">${day}</div>
+                        <div class="day-events">
+                            ${dayEvents.slice(0, 3).map(event => `<div class="day-event ${event.category}">${event.title}</div>`).join('')}
+                            ${dayEvents.length > 3 ? `<div class="day-event">+${dayEvents.length - 3} more</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Next month days to fill grid
+            const totalCells = Math.ceil((firstDay.getDay() + lastDay.getDate()) / 7) * 7;
+            const remainingCells = totalCells - (firstDay.getDay() + lastDay.getDate());
+            
+            for (let day = 1; day <= remainingCells; day++) {
+                html += `<div class="day other-month"><div class="day-number">${day}</div></div>`;
+            }
+
+            html += '</div></div>';
+            return html;
+        }
+
+        function renderUpcoming() {
+            const container = document.getElementById('upcomingList');
+            const today = new Date();
+            
+            const upcomingItems = items
+                .filter(item => {
+                    const itemDate = new Date((item.date || item.startDate) + 'T00:00:00');
+                    return itemDate >= today;
+                })
+                .sort((a, b) => new Date(a.date || a.startDate) - new Date(b.date || b.startDate))
+                .slice(0, 10);
+
+            container.innerHTML = upcomingItems.map(item => `
+                <div class="upcoming-item ${item.category} ${getItemStatus(item)}">
+                    <div class="upcoming-date">${formatDateDisplay(item.date || item.startDate)}</div>
+                    <div class="upcoming-title-text">${item.title}</div>
+                    ${item.time ? `<div class="upcoming-details">${formatTime(item.time)}</div>` : ''}
+                    ${item.notes ? `<div class="upcoming-details">${item.notes}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesGrid');
+            const categories = {
+                'appointments': 'Appointments',
+                'events': 'Events', 
+                'deadlines': 'Kids Events/Appts',
+                'reminders': 'Reminders',
+                'trips': 'Trips'
+            };
+
+            container.innerHTML = Object.entries(categories).map(([key, title]) => {
+                const categoryItems = items.filter(item => item.category === key);
+                
+                return `
+                    <div class="category-card">
+                        <div class="category-header ${key}">${title}</div>
+                        <div class="category-items">
+                            ${categoryItems.map(item => `
+                                <div class="category-item">
+                                    <div class="item-date">${formatDateDisplay(item.date || item.startDate)}</div>
+                                    <div class="item-content">
+                                        <div class="item-title">${item.title}</div>
+                                        ${item.time ? `<div class="item-notes">${formatTime(item.time)}</div>` : ''}
+                                        ${item.notes ? `<div class="item-notes">${item.notes}</div>` : ''}
+                                    </div>
+                                    <div class="item-actions">
+                                        <button class="action-btn" onclick="editItem(${item.id})" title="Edit">✏️</button>
+                                        <button class="action-btn" onclick="deleteItem(${item.id})" title="Delete">🗑️</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getEventsForDate(dateStr) {
+            return items.filter(item => {
+                if (item.category === 'trips') {
+                    return dateStr >= item.startDate && dateStr <= item.endDate;
+                }
+                return item.date === dateStr;
+            });
+        }
+
+        function getItemStatus(item) {
+            const today = new Date();
+            const itemDate = new Date((item.date || item.startDate) + 'T00:00:00');
+            
+            if (itemDate < today) return 'overdue';
+            return '';
+        }
+
+        function formatDateISO(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function formatDateDisplay(dateStr) {
+            const date = new Date(dateStr + 'T00:00:00');
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function formatTime(timeStr) {
+            if (!timeStr) return '';
+            const [hours, minutes] = timeStr.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 || 12;
+            return `${displayHour}:${minutes} ${ampm}`;
+        }
+
+        function showDayEvents(dateStr) {
+            const events = getEventsForDate(dateStr);
+            const date = new Date(dateStr + 'T00:00:00');
+            
+            alert(`Events for ${date.toLocaleDateString()}:\n\n${events.map(e => `• ${e.title}${e.time ? ` at ${formatTime(e.time)}` : ''}`).join('\n')}`);
+        }
+
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = 'Add New Item';
+            document.getElementById('itemForm').reset();
+            document.getElementById('itemId').value = '';
+            toggleDateFields();
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        function editItem(id) {
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('modalTitle').textContent = 'Edit Item';
+            document.getElementById('itemId').value = item.id;
+            document.getElementById('itemTitle').value = item.title;
+            document.getElementById('itemCategory').value = item.category;
+            document.getElementById('itemNotes').value = item.notes || '';
+            
+            if (item.category === 'trips') {
+                document.getElementById('itemStartDate').value = item.startDate;
+                document.getElementById('itemEndDate').value = item.endDate;
+            } else {
+                document.getElementById('itemDate').value = item.date;
+                document.getElementById('itemTime').value = item.time || '';
+            }
+            
+            toggleDateFields();
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        function deleteItem(id) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                items = items.filter(item => item.id !== id);
+                saveData();
+                render();
+            }
+        }
+
+        function toggleDateFields() {
+            const category = document.getElementById('itemCategory').value;
+            const singleDate = document.getElementById('singleDateGroup');
+            const dateRange = document.getElementById('dateRangeGroup');
+            const timeGroup = document.getElementById('timeGroup');
+            
+            if (category === 'trips') {
+                singleDate.classList.add('hidden');
+                dateRange.classList.remove('hidden');
+                timeGroup.classList.add('hidden');
+            } else {
+                singleDate.classList.remove('hidden');
+                dateRange.classList.add('hidden');
+                timeGroup.classList.remove('hidden');
+            }
+        }
+
+        function saveItem() {
+            const id = document.getElementById('itemId').value;
+            const title = document.getElementById('itemTitle').value.trim();
+            const category = document.getElementById('itemCategory').value;
+            const notes = document.getElementById('itemNotes').value.trim();
+            
+            if (!title) {
+                alert('Please enter a title.');
+                return;
+            }
+            
+            const item = {
+                id: id ? parseInt(id) : Date.now(),
+                title,
+                category,
+                notes
+            };
+            
+            if (category === 'trips') {
+                const startDate = document.getElementById('itemStartDate').value;
+                const endDate = document.getElementById('itemEndDate').value;
+                
+                if (!startDate || !endDate) {
+                    alert('Please enter both start and end dates for trips.');
+                    return;
+                }
+                
+                item.startDate = startDate;
+                item.endDate = endDate;
+            } else {
+                const date = document.getElementById('itemDate').value;
+                
+                if (!date) {
+                    alert('Please enter a date.');
+                    return;
+                }
+                
+                item.date = date;
+                item.time = document.getElementById('itemTime').value;
+            }
+            
+            if (id) {
+                const index = items.findIndex(i => i.id == id);
+                if (index !== -1) items[index] = item;
+            } else {
+                items.push(item);
+            }
+            
+            saveData();
+            closeModal();
+            render();
+        }
+
+        function closeModal() {
+            document.getElementById('itemModal').style.display = 'none';
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            // For now, just re-render everything. In a full implementation, 
+            // you'd filter the items based on the search query
+            render();
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify({ active: items }, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `phillips4cast-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (confirm('This will replace all your current data. Continue?')) {
+                        items = data.active || data || [];
+                        saveData();
+                        render();
+                    }
+                } catch (error) {
+                    alert('Error importing data. Please check the file format.');
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.background = type === 'error' 
+                ? 'linear-gradient(135deg, #ff6b35, #ff4444)' 
+                : 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))';
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
